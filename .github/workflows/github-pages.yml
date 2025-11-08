@@ -1,15 +1,9 @@
-name: "Publish to GitHub Pages"
+name: Deploy to GitHub Pages
 
 on:
+  push:
+    branches: [ main ]
   workflow_dispatch:
-  workflow_run:
-    workflows:
-      - "Build and Export Game"  # تأكد أن هذا الاسم مطابق تماماً
-    types:
-      - completed
-
-concurrency:
-  group: ${{ github.workflow }}
 
 permissions:
   contents: read
@@ -17,11 +11,11 @@ permissions:
   id-token: write
 
 jobs:
-  publish:
-    name: Publish to GitHub Pages
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: endlessm/amalgamate-pages@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-pages@v4
+      - uses: actions/upload-pages-artifact@v3
         with:
-          workflow_name: "Build and Export Game"  # نفس الاسم هنا
-          artifact_name: web
+          path: ./dist  # أو المسار الذي يحتوي على ملفاتك
