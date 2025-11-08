@@ -10,33 +10,19 @@ permissions:
   id-token: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       
-      - name: List files (لرؤية الملفات)
-        run: ls -la
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
       
-      - name: Build steps here
-        run: |
-          echo "Add your build commands here"
-          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .  # جرب تغيير هذا إذا كان index.html في مجلد آخر
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    
-    needs: build
-    runs-on: ubuntu-latest
-    
-    steps:
+          path: .  # سيرفع كل الملفات بما فيها index.html
+      
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
-        id: deployment
