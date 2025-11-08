@@ -1,10 +1,10 @@
 name: "Publish to GitHub Pages"
+
 on:
-  delete:
   workflow_dispatch:
   workflow_run:
     workflows:
-      - "Build and Export Game"
+      - "Build and Export Game"  # تأكد أن هذا الاسم مطابق تماماً
     types:
       - completed
 
@@ -15,15 +15,13 @@ permissions:
   contents: read
   pages: write
   id-token: write
-  pull-requests: write
-  statuses: write
 
 jobs:
   publish:
-    name: Publish all branches to GitHub Pages
+    name: Publish to GitHub Pages
     runs-on: ubuntu-latest
     steps:
       - uses: endlessm/amalgamate-pages@v2
         with:
-          workflow_name: "Build and Export Game"
+          workflow_name: "Build and Export Game"  # نفس الاسم هنا
           artifact_name: web
