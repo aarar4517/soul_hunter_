@@ -1,0 +1,59 @@
+[gd_scene load_steps=8 format=3 uid="uid://b0oi4jlu1bgds"]
+
+[ext_resource type="Texture2D" uid="uid://bursp44m0wige" path="res://Bot/download-removebg-preview.png" id="1_3vyb7"]
+[ext_resource type="Script" uid="uid://c0c15abj62h2u" path="res://Bot/Bot.gd" id="1_g2els"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lj8jo"]
+atlas = ExtResource("1_3vyb7")
+region = Rect2(204, 0, 102, 137)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g2brh"]
+atlas = ExtResource("1_3vyb7")
+region = Rect2(306, 0, 102, 137)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sxias"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lj8jo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g2brh")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.5
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f50pn"]
+radius = 68.888374
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q33ou"]
+radius = 9.108011
+
+[node name="bot" type="CharacterBody2D"]
+script = ExtResource("1_g2els")
+speed = 250.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1, -7.6293945e-06)
+rotation = 0.00019342803
+scale = Vector2(0.45782647, 0.33404803)
+sprite_frames = SubResource("SpriteFrames_sxias")
+frame_progress = 0.43401638
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2.9999998, 2.0000076)
+scale = Vector2(0.21379432, 0.23375712)
+shape = SubResource("CircleShape2D_f50pn")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-2, 2.3841858e-07)
+scale = Vector2(1.6851606, 2.07279)
+shape = SubResource("CircleShape2D_q33ou")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
