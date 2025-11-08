@@ -8,27 +8,37 @@ on:
 permissions:
   pages: write
   id-token: write
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
       
-      - name: Build steps here
-        run: |
-          # ضع هنا أوامر البناء الخاصة بمشروعك
-          echo "Add your build commands here"
-          
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .  # غير هذا للمسار الصحيح
+name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+      
+name: Build steps here
+      run: |
+        echo "Add your build commands here"
+
+      
+name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: .
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
+      
+name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v4
+      id: deployment
