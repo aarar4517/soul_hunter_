@@ -1,37 +1,29 @@
-name: Build and Export Game
-
+name: "Publish to GitHub Pages"
 on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+  delete:
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - "Build and Export Game"
+    types:
+      - completed
+
+concurrency:
+  group: ${{ github.workflow }}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  pull-requests: write
+  statuses: write
 
 jobs:
-  build:
+  publish:
+    name: Publish all branches to GitHub Pages
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Build project
-        run: |
-          # أضف أوامر البناء الخاصة بمشروعك هنا
-          echo "Add your build commands here"
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: game-build
-          path: |
-            build/
-            dist/
-          retention-days: 30
+      - uses: endlessm/amalgamate-pages@v2
         with:
           workflow_name: "Build and Export Game"
           artifact_name: web
