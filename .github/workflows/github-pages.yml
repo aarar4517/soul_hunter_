@@ -1,25 +1,55 @@
-name: Upload Game for Public Download
+name: Create Public Game Release
 
 on:
   push:
-    branches: [main]
+    tags: ['v*']
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  upload-public-game:
+  create-public-release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       
-      - name: Upload Game Files
-        uses: actions/upload-artifact@v4
+      - name: Create Public Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: 🎮 Game Download
-          path: |
-            *.exe
-            *.pck
-            *.x86_64
-            *.dmg
-            Build/
-            export/
+          tag_name: v1.0.0
+          release_name: 🎮 لعبتي - الإصدار v1.0.0
+          body: |
+            ### 📥 تحميل اللعبة
+            
+            - **Windows**: MyGame-Windows.exe
+            - **Linux**: MyGame-Linux.x86_64
+            - **Mac**: MyGame-Mac.dmg
+            
+            ### 🎯 تعليمات
+            ١. حمل الملف المناسب لجهازك
+            ٢. شغّل اللعبة واستمتع!
+          draft: false
+          prerelease: false
+      
+      - name: Upload Windows Game
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./your-game.exe  # غير هذا لملف لعبتك
+          asset_name: MyGame-Windows.exe
+      
+      - name: Upload Linux Game
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./your-game.x86_64
+          asset_name: MyGame-Linux.x86_64
