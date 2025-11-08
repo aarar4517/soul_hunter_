@@ -16,15 +16,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       
+      - name: List files (لرؤية الملفات)
+        run: ls -la
+      
       - name: Build steps here
         run: |
-          # ضع هنا أوامر البناء الخاصة بمشروعك
           echo "Add your build commands here"
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .  # غير هذا للمسار الصحيح
+          path: .  # جرب تغيير هذا إذا كان index.html في مجلد آخر
 
   deploy:
     environment:
