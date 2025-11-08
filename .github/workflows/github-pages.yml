@@ -1,33 +1,25 @@
-name: Release Game
+name: Upload Game for Download
 
 on:
   push:
-    tags: ['v*']
+    branches: [main]
   workflow_dispatch:
 
 jobs:
-  create-release:
+  upload-game:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       
-      - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Game Artifact
+        uses: actions/upload-artifact@v4
         with:
-          tag_name: v1.0.0
-          release_name: Game v1.0.0
-          draft: false
-          prerelease: false
-      
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ./your-game.exe  # غير هذا لمسار لعبتك
-          asset_name: MyGame.exe
-          asset_content_type: application/octet-stream
+          name: game-files
+          path: |
+            *.exe
+            *.zip
+            *.dmg
+            *.app
+            Build/
+          retention-days: 30
