@@ -8,7 +8,7 @@ on:
 permissions:
   pages: write
   id-token: write
-  contents: read  # ضفنا هذا لتمكين القراءة للجميع
+  contents: read
 
 jobs:
   build:
@@ -18,21 +18,18 @@ jobs:
 name: Checkout
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # لجلب كل التاريخ والملفات
-
-      
-name: Setup Pages
-      uses: actions/configure-pages@v4
+        fetch-depth: 0
 
       
 name: Build steps here
-      run: |# أوامر البناء الخاصة بمشروعك
+      run: |# ضع هنا أوامر البناء الخاصة بمشروعك
         echo "Add your build commands here"
-        # إذا كانت لعبة ويب، تأكد من وجود index.html# إذا كانت لعبة قابلة للتحميل، تأكد من وجود ملفات التنفيذ
+
+      
 name: Upload artifact
-uses: actions/upload-pages-artifact@v3
-with:
-  path: .  # أو المسار الصحيح لملفات اللعبة
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: .
 
   deploy:
     needs: build
@@ -40,7 +37,6 @@ with:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       
 name: Deploy to GitHub Pages
